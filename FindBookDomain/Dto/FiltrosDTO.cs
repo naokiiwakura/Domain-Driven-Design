@@ -14,5 +14,7 @@ namespace FindBookDomain.Dto
         public string Ilustrador { get; set; }
         public int? QuantidadePaginasInicial { get; set; }
         public int? QuantidadePaginasFinal { get; set; }
+        public string CampoOrdenacao { get; set; }
+        public bool Crescente { get; set; }
     }
 }
