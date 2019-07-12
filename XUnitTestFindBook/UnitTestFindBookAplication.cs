@@ -12,6 +12,8 @@ using FindBookDomain.Repository;
 using FindBookAplication;
 using System.Threading.Tasks;
 using FindBookDomain.Dto;
+using System.Linq;
+using System.Text;
 
 namespace XUnitTestFindBook
 {
@@ -28,7 +30,7 @@ namespace XUnitTestFindBook
 
         private List<Book> MockListaLivro()
         {
-            var json = File.ReadAllText(@"../../../Mock/books.json");
+            var json = File.ReadAllText(@"../../../Mock/books.json", Encoding.GetEncoding("iso-8859-1"));
 
             var books = JsonConvert.DeserializeObject<List<Book>>(json);
 
@@ -150,7 +152,7 @@ namespace XUnitTestFindBook
         [InlineData("Cliff Wright", 2)]
         [InlineData("Édouard Riou", 2)]
         [InlineData("Mary GrandPré", 1)]
-        [InlineData("J. R. R. Tolkien", 1)]
+        [InlineData("Tolkien", 1)]
         public void BuscarLivroPorIlustrador(string nome, int quantidadeRetorno)
         {
             //Arranjo
@@ -211,6 +213,34 @@ namespace XUnitTestFindBook
 
             //Confirmação
             Assert.Equal(quantidadeRetorno, resultado.Count);
+        }
+
+
+
+        [Theory]
+        [InlineData("autor", true, 3)]
+        [InlineData("autor", false, 1)]
+        [InlineData("nome", true, 2)]
+        [InlineData("nome", false, 5)]
+        [InlineData("preco", true, 5)]
+        [InlineData("preco", false, 4)]
+        [InlineData("pagina", true, 1)]
+        [InlineData("pagina", false, 5)]
+        public void BuscarLivroComOrdenacao(string campo,bool crescente, int idDoRegistro)
+        {
+            //Arranjo
+            var filtro = new FiltrosDTO
+            {
+                CampoOrdenacao = campo,
+                Crescente = crescente
+            };
+            _bookRepositoryMock.Setup(m => m.Query()).Returns(MockListaLivro());
+
+            //Ação
+            var resultado = _bookService.BuscarLivros(filtro);
+
+            //Confirmação
+            Assert.Equal(idDoRegistro, resultado.First().Id);
         }
     }
 }

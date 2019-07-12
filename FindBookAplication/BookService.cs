@@ -37,7 +37,7 @@ namespace FindBookAplication
                 livros = livros.Where(p => p.Specifications.Genres.Contains(filtros.Genero)).ToList();
 
             if (!string.IsNullOrEmpty(filtros.Ilustrador))
-                livros = livros.Where(p => p.Specifications.Illustrator.Contains(filtros.Ilustrador)).ToList();
+                livros = livros.Where(p =>  p.Specifications.Illustrator.Any(s => s.Contains(filtros.Ilustrador))).ToList();
 
             if (filtros.QuantidadePaginasInicial != null)
                 livros = livros.Where(p => p.Specifications.PageCount >= filtros.QuantidadePaginasInicial).ToList();
@@ -58,14 +58,6 @@ namespace FindBookAplication
 
                 case "preco":
                     livros = filtros.Crescente ? livros.OrderBy(p => p.Price).ToList() : livros.OrderByDescending(p => p.Price).ToList();
-                    break;
-
-                case "genero":
-                    livros = filtros.Crescente ? livros.OrderBy(p => p.Specifications.Genres).ToList() : livros.OrderByDescending(p => p.Specifications.Genres).ToList();
-                    break;
-
-                case "ilustrador":
-                    livros = filtros.Crescente ? livros.OrderBy(p => p.Specifications.Illustrator).ToList() : livros.OrderByDescending(p => p.Specifications.Illustrator).ToList();
                     break;
 
                 case "pagina":
