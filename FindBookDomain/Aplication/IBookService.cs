@@ -9,5 +9,6 @@ namespace FindBookDomain.Aplication
     public interface IBookService
     {
         List<Book> BuscarLivros(FiltrosDTO filtros);
+        double CalcularFrete(int id);
     }
 }

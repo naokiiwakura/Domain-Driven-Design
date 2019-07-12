@@ -71,5 +71,15 @@ namespace FindBookAplication
 
             return livros;
         }
+
+        public double CalcularFrete(int id)
+        {
+            var livro = _repo.Query().Where(p => p.Id == id).FirstOrDefault();
+
+            if (livro == null)
+                return 0;
+
+            return livro.Price * 0.2;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace XUnitTestFindBook
 {
     public class UnitTestFindBookAplication
     {
-        private readonly BookService _bookService;
+        private readonly IBookService _bookService;
         private readonly Mock<IBookRepository> _bookRepositoryMock = new Mock<IBookRepository>();
 
         public UnitTestFindBookAplication()
@@ -42,6 +42,7 @@ namespace XUnitTestFindBook
         [InlineData("J. K. Rowling", 2)]
         [InlineData("J. R. R. Tolkien", 1)]
         [InlineData("J", 5)]
+        [InlineData("Gabriel", 0)]
         public void BuscarLivroPorAutor(string nome, int quantidadeRetorno)
         {
             //Arranjo
@@ -242,5 +243,26 @@ namespace XUnitTestFindBook
             //Confirmação
             Assert.Equal(idDoRegistro, resultado.First().Id);
         }
+
+
+        [Theory]
+        [InlineData(1,2)]
+        [InlineData(2,2.02)]
+        [InlineData(3,1.462)]
+        [InlineData(4,2.23)]
+        [InlineData(5,1.23)]
+        public void CalcularPrecoDoFrete(int id, double valorDoFrete)
+        {
+            //Arranjo
+            _bookRepositoryMock.Setup(m => m.Query()).Returns(MockListaLivro());
+
+            //Ação
+            var resultado = _bookService.CalcularFrete(id);
+
+            //Confirmação
+            Assert.Equal(valorDoFrete, resultado);
+        }
+
+
     }
 }
