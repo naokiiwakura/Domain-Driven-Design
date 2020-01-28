@@ -250,7 +250,7 @@ namespace XUnitTestFindBook
         [InlineData(2,2.02)]
         [InlineData(3,1.462)]
         [InlineData(4,2.23)]
-        [InlineData(5,1.23)]
+        [InlineData(5, 1.2300000000000002)]
         public void CalcularPrecoDoFrete(int id, double valorDoFrete)
         {
             //Arranjo
